@@ -6,11 +6,30 @@ import routers.auth as auth
 import routers.links as links
 import routers.analytics as analytics
 import routers.redirect as redirect
+import threading
+from workers.analytics_worker import process_events
 
 # Create DB tables
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Scalable Smart Link Platform")
+
+# Threading control for background worker
+worker_stop_event = threading.Event()
+worker_thread = None
+
+@app.on_event("startup")
+def startup_event():
+    global worker_thread
+    worker_thread = threading.Thread(target=process_events, args=(worker_stop_event,), daemon=True)
+    worker_thread.start()
+    
+@app.on_event("shutdown")
+def shutdown_event():
+    global worker_thread
+    worker_stop_event.set()
+    if worker_thread:
+        worker_thread.join(timeout=5)
 
 # CORS config
 app.add_middleware(

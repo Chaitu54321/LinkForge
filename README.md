@@ -74,19 +74,11 @@ You will need Node.js, Python 3.11+, and an instance of PostgreSQL and Redis run
    uvicorn main:app --reload
    ```
 
-### 2. Run the Analytics Worker
+_(Note: When deploying to platforms like Render, the Analytics Worker runs automatically in the background of the main Web Service via a daemon thread. There is no need to deploy a separate worker instance!)_
 
-The analytics worker must be running to process click events and synchronize click counts to the database.
-Open a _second_ terminal window:
+### 2. Frontend Setup
 
-```bash
-cd backend
-python workers/analytics_worker.py
-```
-
-### 3. Frontend Setup
-
-Open a _third_ terminal window:
+Open a terminal window:
 
 ```bash
 cd frontend

@@ -2,6 +2,7 @@ import sys
 import os
 import time
 import json
+import threading
 from datetime import datetime
 
 # Add the backend directory to python path for imports
@@ -25,11 +26,15 @@ def setup_stream():
         if "BUSYGROUP" not in str(e):
             print(f"Error creating group: {e}")
 
-def process_events():
-    print("Analytics worker started, waiting for events...")
+def process_events(stop_event: threading.Event = None):
+    print("Analytics worker started gracefully in background thread, waiting for events...")
     setup_stream()
     
     while True:
+        if stop_event and stop_event.is_set():
+            print("Analytics worker shutting down...")
+            break
+            
         try:
             # Read from stream, wait up to 5 seconds
             events = redis_client.xreadgroup(
