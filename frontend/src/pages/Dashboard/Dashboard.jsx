@@ -121,7 +121,7 @@ const Dashboard = () => {
                   <tr key={link.id} style={{ borderBottom: '1px solid var(--glass-border)' }}>
                     <td style={{ padding: '1.25rem 2rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <a href={`http://localhost:8000/${link.short_code}`} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 600 }}>
+                        <a href={`${import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_BASE_URL.replace('/api', '') : 'http://localhost:8000'}/${link.short_code}`} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 600 }}>
                           /{link.short_code}
                         </a>
                       </div>
