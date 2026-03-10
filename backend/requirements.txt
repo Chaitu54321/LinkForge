@@ -12,3 +12,4 @@ python-multipart==0.0.12
 pybase62==1.0.0
 alembic==1.13.3
 bcrypt==4.0.1
+email-validator==2.1.1
